@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  fyleinterviewinternbackend:
+    image: fyleinterviewinternbackend
+    environment:
+      - FLASK_APP=core/server.py
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 7755:7755
