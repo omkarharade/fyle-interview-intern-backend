@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Install pip requirements
 COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
+RUN python -m pip install -r requirements.txt && apt-get update && apt-get install -y curl
 
 WORKDIR /app
 COPY . /app
@@ -23,4 +23,5 @@ USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 ENV FLASK_APP=core/server.py
-CMD ["flask", "run", "--host", "127.0.0.1"]
+# CMD ["flask", "run", "--host", "0.0.0.0", "--port", "7755"]
+CMD ["gunicorn", "-b", "0.0.0.0:7755", "--config", "gunicorn_config.py", "core.server:app"]
